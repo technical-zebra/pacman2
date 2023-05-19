@@ -1,3 +1,4 @@
+using UnityEngine;
 /// <summary>
 /// Base class for defining different behaviors of a ghost.
 /// </summary>

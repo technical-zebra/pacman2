@@ -1,3 +1,4 @@
+using UnityEngine;
 /// <summary>
 /// Controls the sprite and appearance of the ghost's eyes based on the movement direction.
 /// </summary>
