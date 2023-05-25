@@ -10,32 +10,24 @@ public class Pacman : MonoBehaviour
     public SpriteRenderer spriteRenderer { get; private set; } // The sprite renderer component of Pacman
     public new Collider2D collider { get; private set; } // The collider component of Pacman
     public Movement movement { get; private set; } // The movement component of Pacman
+    public PlayerInput playerInput { get; private set; } // The player input component of Pacman
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<Collider2D>();
         movement = GetComponent<Movement>();
+        playerInput = GetComponent<PlayerInput>();
     }
 
     private void Update()
     {
-        // Set the new direction based on the current input
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        // Get player directional input from input component
+        Vector2 inputDirection = playerInput.GetDirectionalInput();
+        // Pass player input from input component to movement component if the player presses a directional key
+        if (inputDirection.magnitude > 0)
         {
-            movement.SetDirection(Vector2.up);
-        }
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            movement.SetDirection(Vector2.down);
-        }
-        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            movement.SetDirection(Vector2.left);
-        }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            movement.SetDirection(Vector2.right);
+            movement.SetDirection(playerInput.GetDirectionalInput());
         }
 
         // Rotate Pacman to face the movement direction
