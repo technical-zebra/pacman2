@@ -75,7 +75,7 @@ public class Ghost : MonoBehaviour
         chase.Disable();
         scatter.Enable();
 
-        // Disable the initial behavior if it's not the home behavior
+        // Disable the home behavior if it's not the initial behavior
         if (home != initialBehavior)
         {
             home.Disable();

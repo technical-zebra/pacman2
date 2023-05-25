@@ -8,11 +8,12 @@ public class Pacman : MonoBehaviour
 {
     public AnimatedSprite deathSequence; // The animated sprite representing the death sequence of Pacman
     public AnimatedSprite speedySequence;
+    public AnimatedSprite invincibleSequence;
+
     public SpriteRenderer spriteRenderer { get; private set; } // The sprite renderer component of Pacman
     public new Collider2D collider { get; private set; } // The collider component of Pacman
     public Movement movement { get; private set; } // The movement component of Pacman
     public PlayerInput playerInput { get; private set; } // The player input component of Pacman
-    public AnimatedSprite invincibleSequence;
 
     private void Awake()
     {
@@ -45,12 +46,14 @@ public class Pacman : MonoBehaviour
         enabled = true;
         spriteRenderer.enabled = true;
         collider.enabled = true;
+
         deathSequence.enabled = false;
         deathSequence.spriteRenderer.enabled = false;
         invincibleSequence.enabled = false;
         invincibleSequence.spriteRenderer.enabled = false;
         speedySequence.enabled = false;
         speedySequence.spriteRenderer.enabled = false;
+
         movement.ResetState();
         gameObject.SetActive(true);
     }
@@ -64,12 +67,14 @@ public class Pacman : MonoBehaviour
         spriteRenderer.enabled = false;
         collider.enabled = false;
         movement.enabled = false;
-        deathSequence.enabled = true;
-        deathSequence.spriteRenderer.enabled = true;
+
         invincibleSequence.enabled = false;
         invincibleSequence.spriteRenderer.enabled = false;
         speedySequence.enabled = false;
         speedySequence.spriteRenderer.enabled = false;
+
+        deathSequence.enabled = true;
+        deathSequence.spriteRenderer.enabled = true;
         deathSequence.Restart();
     }
 

@@ -8,10 +8,12 @@ public class MainManager : MonoBehaviour
     // Initialise MainManager as a singleton
     public static MainManager Instance { get; private set; }
 
-    public bool isPaused = false; // Bool toggle game pausing
+    public bool isTimePaused { get; private set; } // Bool toggle time pausing
 
     private void Awake()
     {
+        isTimePaused = false; // Make sure game is not paused on awake
+
         // Ensure only one instance of MainManager exists
         if (Instance != null && Instance != this)
         {
@@ -28,8 +30,7 @@ public class MainManager : MonoBehaviour
 
     private void Update()
     {
-        // If game is paused set timescale to 0 to pause game
-        if (isPaused)
+        if (isTimePaused)
         {
             Time.timeScale = 0;
         } 
@@ -42,12 +43,24 @@ public class MainManager : MonoBehaviour
     // Function to load the specified scene
     public void LoadLevel(string levelname)
     {
+        isTimePaused = false; // Automatically unpause whenever we load another level
         SceneManager.LoadScene(levelname);
     }
 
     // Function to toggle isPaused bool
-    public void TogglePause()
+    public void TogglePauseTime()
     {
-        isPaused = !isPaused;
+        isTimePaused = !isTimePaused;
+    }
+
+    // Function to toggle isPaused bool
+    public void PauseTime()
+    {
+        isTimePaused = true;
+    }
+
+    public void UnpauseTime()
+    {
+        isTimePaused = false;
     }
 }

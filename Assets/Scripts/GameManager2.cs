@@ -2,23 +2,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GameManager : MonoBehaviour
+
+public class GameManager2 : MonoBehaviour
 {
-    private Ghost[] ghosts;  // Array of ghost objects
+    public Ghost[] ghosts;  // Array of ghost objects
     public Pacman pacman;  // Pacman object
     public Transform pellets;  // Transform containing pellet objects
 
+    public TextMeshProUGUI gameOverText; // Text object to display game over message
     public TextMeshProUGUI livesText; // Text object to display the number of lives
     public TextMeshProUGUI scoreText; // Text object to display the score
 
     public int ghostMultiplier { get; private set; } = 1;  // Multiplier for ghost points
     public int score { get; private set; }  // Current score
     public int lives { get; private set; }  // Remaining lives
-
-    public bool isGameOver { get; private set; } // Bool for if the game has ended
-    public bool isGamePaused { get; private set; } // Bool for if the game has paused
-
-    private bool pacmanInvincible = false; // Flag to track Pacman's invincibility
 
     public AudioSource walk;
     public AudioSource death;
@@ -29,63 +26,52 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        ghosts = FindObjectsOfType<Ghost>();
         NewGame();  // Start a new game
     }
 
-    public void NewGame()
+    private void Update()
     {
-        isGameOver = false;
+        if (lives <= 0 && Input.anyKeyDown) {
+            NewGame();  // Start a new game if all lives are lost and any key is pressed
+        }
+    }
+
+    private void NewGame()
+    {
         SetScore(0);  // Reset the score to 0
         SetLives(3);  // Set initial number of lives to 3
         NewRound();  // Start a new round
-
-        MainManager.Instance.UnpauseTime(); // Call Main Manager to start time
     }
 
     private void NewRound()
     {
+        gameOverText.enabled = false;  // Hide the game over text
+
         foreach (Transform pellet in pellets) {
             pellet.gameObject.SetActive(true);  // Activate all the pellets
         }
 
-        // Reset the state of ghosts and Pacman
-        ResetState();
+        ResetState();  // Reset the state of ghosts and Pacman
     }
 
     private void ResetState()
     {
-        ResetPacmanState();
-        ResetGhostState();
-    }
+        for (int i = 0; i < ghosts.Length; i++) {
+            ghosts[i].ResetState();  // Reset the state of each ghost
+        }
 
-    private void ResetPacmanState()
-    {
         pacman.ResetState();  // Reset the state of Pacman
-        pacmanInvincible = false; // Reset Pacman's invincibility
-    }
-
-    private void ResetGhostState()
-    {
-            for (int i = 0; i < ghosts.Length; i++)
-            {
-                ghosts[i].ResetState();  // Reset the state of each ghost
-            }
     }
 
     private void GameOver()
     {
-        isGameOver = true;
-        isGamePaused = false;
+        gameOverText.enabled = true;  // Show the game over text
 
-        for (int i = 0; i < ghosts.Length; i++) 
-        {
+        for (int i = 0; i < ghosts.Length; i++) {
             ghosts[i].gameObject.SetActive(false);  // Deactivate all the ghosts
-        }  
+        }
 
         pacman.gameObject.SetActive(false);  // Deactivate Pacman
-
-        MainManager.Instance.PauseTime(); // Call Main Manager to stop time
     }
 
     private void SetLives(int lives)
@@ -102,20 +88,16 @@ public class GameManager : MonoBehaviour
 
     public void PacmanEaten()
     {
-        if (pacmanInvincible)
-            return; // Return early if Pacman is invincible
-
-        lostlife.Play();
-
         pacman.DeathSequence();  // Perform the death sequence for Pacman
 
         SetLives(lives - 1);  // Decrease the number of lives by 1
 
+        lostlife.Play();
+
         if (lives > 0) {
-            // Reset the state after a delay if there are remaining lives
-            Invoke(nameof(ResetState), 3f);
+            Invoke(nameof(ResetState), 3f);  // Reset the state after a delay if there are remaining lives
         } else {
-            Invoke(nameof(GameOver), 3f); // If no lives are remaining, trigger the game over sequence after a short delay
+            GameOver();  // If no lives are remaining, trigger the game over sequence
         }
     }
 
@@ -132,19 +114,19 @@ public class GameManager : MonoBehaviour
     {
         pellet.gameObject.SetActive(false);  // Deactivate the eaten pellet
 
-        walk.Play();
         SetScore(score + pellet.points);  // Update the score by adding the points of the eaten pellet
+        walk.Play();
 
         if (!HasRemainingPellets())
         {
-            GameOver();
+            pacman.gameObject.SetActive(false);  // Deactivate Pacman
+            Invoke(nameof(NewRound), 3f);  // Start a new round after a delay if there are no remaining pellets
         }
     }
 
     public void PowerPelletEaten(PowerPellet pellet)
     {
-        for (int i = 0; i < ghosts.Length; i++)
-        {
+        for (int i = 0; i < ghosts.Length; i++) {
             ghosts[i].frightened.Enable(pellet.duration);  // Enable the frightened state of each ghost for the specified duration
         }
 
@@ -154,24 +136,6 @@ public class GameManager : MonoBehaviour
         PelletEaten(pellet);  // Process the power pellet as a regular pellet
         CancelInvoke(nameof(ResetGhostMultiplier));  // Cancel any previous invocation of ResetGhostMultiplier
         Invoke(nameof(ResetGhostMultiplier), pellet.duration);  // Reset the ghost point multiplier after the specified duration
-    }
-
-    public void SpeedyPowerPelletEaten(SpeedyPowerPellet pellet)
-    {
-        pacman.SpeedySequence();
-        pacman.movement.SetSpeedMultiplier(3f, pellet.duration);  // Set the speed multiplier for Pacman
-        PelletEaten(pellet);  // Process the speedy pellet as a regular pellet
-        CancelInvoke(nameof(ResetPacmanState));
-        Invoke(nameof(ResetPacmanState), 8f);
-    }
-
-    public void InvinciblePowerPelletEaten(InvinciblePowerPellet pellet)
-    {
-        pacman.InvincibleSequence();
-        EnablePacmanInvincibility(15f); // Enable invincibility
-        PelletEaten(pellet);  // Process the invincibile pellet as a regular pellet
-        CancelInvoke(nameof(ResetPacmanState));
-        Invoke(nameof(ResetPacmanState), 15f);
     }
 
     private bool HasRemainingPellets()
@@ -186,28 +150,10 @@ public class GameManager : MonoBehaviour
         return false;  // Return false if no active pellets are found
     }
 
-    public void EnablePacmanInvincibility(float duration)
-    {
-        pacmanInvincible = true;
-        Invoke(nameof(DisablePacmanInvincibility), duration);
-    }
-
-    private void DisablePacmanInvincibility()
-    {
-        pacmanInvincible = false;
-    }
-
     private void ResetGhostMultiplier()
     {
         ghostMultiplier = 1;  // Reset the ghost point multiplier to 1
     }
-
-    public void toggleGamePause()
-    {
-        if (!isGameOver)
-        {
-            MainManager.Instance.TogglePauseTime();
-            isGamePaused = MainManager.Instance.isTimePaused;
-        }
-    }
 }
+
+

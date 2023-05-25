@@ -8,7 +8,6 @@ public class GhostHome : GhostBehavior
 {
     public Transform inside;
     public Transform outside;
-    private bool hasStartedCoroutine = false;
 
     /// <summary>
     /// Called when the script is enabled.
@@ -16,13 +15,7 @@ public class GhostHome : GhostBehavior
     /// </summary>
     private void OnEnable()
     {
-        
-        if (!hasStartedCoroutine)
-        {
-            StopAllCoroutines();
-            //StartCoroutine(ExitTransition());
-
-        }
+        StopAllCoroutines();
     }
 
     /// <summary>
@@ -72,7 +65,7 @@ public class GhostHome : GhostBehavior
         while (elapsed < duration)
         {
             ghost.SetPosition(Vector3.Lerp(position, inside.position, elapsed / duration));
-            elapsed += UnityEngine.Time.deltaTime;
+            elapsed += Time.deltaTime;
             yield return null;
         }
 
@@ -91,5 +84,4 @@ public class GhostHome : GhostBehavior
         ghost.movement.rigidbody.isKinematic = false;
         ghost.movement.enabled = true;
     }
-
 }
