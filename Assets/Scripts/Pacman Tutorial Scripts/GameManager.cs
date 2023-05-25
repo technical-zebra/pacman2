@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public int score { get; private set; }  // Current score
     public int lives { get; private set; }  // Remaining lives
 
+    private bool pacmanInvincible = false; // Flag to track Pacman's invincibility
+
     private void Start()
     {
         NewGame();  // Start a new game
@@ -53,6 +55,8 @@ public class GameManager : MonoBehaviour
         }
 
         pacman.ResetState();  // Reset the state of Pacman
+
+        pacmanInvincible = false; // Reset Pacman's invincibility
     }
 
     private void GameOver()
@@ -80,6 +84,9 @@ public class GameManager : MonoBehaviour
 
     public void PacmanEaten()
     {
+        if (pacmanInvincible)
+            return; // Return early if Pacman is invincible
+
         pacman.DeathSequence();  // Perform the death sequence for Pacman
 
         SetLives(lives - 1);  // Decrease the number of lives by 1
@@ -123,6 +130,23 @@ public class GameManager : MonoBehaviour
         Invoke(nameof(ResetGhostMultiplier), pellet.duration);  // Reset the ghost point multiplier after the specified duration
     }
 
+    public void SpeedyPowerPelletEaten(SpeedyPowerPellet pellet)
+    {
+        pacman.SpeedySequence();
+        pacman.movement.SetSpeedMultiplier(3f, pellet.duration);  // Set the speed multiplier for Pacman
+        PelletEaten(pellet);  // Process the power pellet as a regular pellet
+        Invoke(nameof(ResetState), 8f);
+    }
+
+    public void InvinciblePowerPelletEaten(InvinciblePowerPellet pellet)
+    {
+        pacman.InvincibleSequence();
+        EnablePacmanInvincibility(15f); // Enable invincibility
+        PelletEaten(pellet);  // Process the power pellet as a regular pellet
+        Invoke(nameof(ResetState), 15f);
+    }
+
+
     private bool HasRemainingPellets()
     {
         foreach (Transform pellet in pellets)
@@ -138,5 +162,16 @@ public class GameManager : MonoBehaviour
     private void ResetGhostMultiplier()
     {
         ghostMultiplier = 1;  // Reset the ghost point multiplier to 1
+    }
+
+    public void EnablePacmanInvincibility(float duration)
+    {
+        pacmanInvincible = true;
+        Invoke(nameof(DisablePacmanInvincibility), duration);
+    }
+
+    private void DisablePacmanInvincibility()
+    {
+        pacmanInvincible = false;
     }
 }

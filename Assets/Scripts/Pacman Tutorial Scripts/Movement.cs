@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections; // Add this line to import the IEnumerator type
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Movement : MonoBehaviour
@@ -115,6 +116,23 @@ public class Movement : MonoBehaviour
         
         // If a collider is hit, there is an obstacle in that direction
         return hit.collider != null;
+    }
+
+    /// <summary>
+    /// Sets the speed multiplier and duration.
+    /// </summary>
+    /// <param name="multiplier">The speed multiplier to apply.</param>
+    /// <param name="duration">The duration of the speed boost.</param>
+    public void SetSpeedMultiplier(float multiplier, float duration)
+    {
+        speedMultiplier = multiplier;
+        StartCoroutine(ResetSpeedMultiplier(duration));
+    }
+
+    private IEnumerator ResetSpeedMultiplier(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        speedMultiplier = 1f;  // Reset the speed multiplier to its default value
     }
 
 }
