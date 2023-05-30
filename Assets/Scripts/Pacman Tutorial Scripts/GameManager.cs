@@ -20,8 +20,7 @@ public class GameManager : MonoBehaviour
 
     private bool pacmanInvincible = false; // Flag to track Pacman's invincibility
 
-    public AudioSource walk;
-    public AudioSource death;
+    public AudioSource eatpellet;
     public AudioSource eatpowerpellet;
     public AudioSource soundtrack;
     public AudioSource lostlife;
@@ -131,7 +130,7 @@ public class GameManager : MonoBehaviour
     {
         pellet.gameObject.SetActive(false);  // Deactivate the eaten pellet
 
-        walk.Play();
+        eatpellet.Play();
         SetScore(score + pellet.points);  // Update the score by adding the points of the eaten pellet
 
         if (!HasRemainingPellets())
