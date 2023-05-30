@@ -134,5 +134,4 @@ public class Movement : MonoBehaviour
         yield return new WaitForSeconds(duration);
         speedMultiplier = 1f;  // Reset the speed multiplier to its default value
     }
-
 }

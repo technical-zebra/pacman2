@@ -35,7 +35,7 @@ public abstract class GhostBehavior : MonoBehaviour
     /// <param name="duration">Duration of the behavior.</param>
     public virtual void Enable(float duration)
     {
-        this.enabled = true;
+       this.enabled = true; //NB
 
         // Cancel any previous invoke calls and schedule the behavior to disable after the specified duration
         CancelInvoke();
@@ -48,8 +48,9 @@ public abstract class GhostBehavior : MonoBehaviour
     public virtual void Disable()
     {
         // Disable the behavior by disabling the script
+        this.enabled = false; //NB
         // Commented out since it's not needed as the script can be disabled by setting the 'enabled' property to false
-        this.enabled = false;
+
         // Cancel any pending invoke calls
         CancelInvoke();
     }

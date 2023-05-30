@@ -5,6 +5,10 @@ using UnityEngine;
 public class SpeedyPowerPellet : PowerPellet
 {
     // Any additional properties or methods specific to SpeedyPowerPellet can be defined here
+    private void Awake()
+    {
+        duration = 8f; // Duration of the power pellet effect
+    }
 
     /// <summary>
     /// Overrides the Eat method from the base class.

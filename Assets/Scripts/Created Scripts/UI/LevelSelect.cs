@@ -13,4 +13,14 @@ public class LevelSelect : MonoBehaviour
     {
         MainManager.Instance.LoadLevel("level01");
     }
+
+    public void ToLevel02()
+    {
+        MainManager.Instance.LoadLevel("level02");
+    }
+
+    public void ToLevel03()
+    {
+        MainManager.Instance.LoadLevel("level03");
+    }
 }

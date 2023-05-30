@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class InvinciblePowerPellet : PowerPellet
 {
+    private void Awake()
+    {
+        duration = 15f; // Duration of the power pellet effect
+    }
 
     /// <summary>
     /// Overrides the Eat method from the base class.

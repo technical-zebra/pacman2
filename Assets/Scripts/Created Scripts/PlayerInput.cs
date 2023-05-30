@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
+    private GameManager gameManager;
+
+    private void Awake()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            MainManager.Instance.TogglePause();
+            gameManager.toggleGamePause();
         }
     }
     

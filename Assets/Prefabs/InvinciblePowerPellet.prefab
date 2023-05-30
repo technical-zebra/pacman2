@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3420008504030154287, guid: 69c48e7fcbd8e844e85828e2458714c8, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3420008504030154287, guid: 69c48e7fcbd8e844e85828e2458714c8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -54,15 +54,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5053324837811053146, guid: 69c48e7fcbd8e844e85828e2458714c8, type: 3}
       propertyPath: m_Color.b
-      value: 0.8679245
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5053324837811053146, guid: 69c48e7fcbd8e844e85828e2458714c8, type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 5053324837811053146, guid: 69c48e7fcbd8e844e85828e2458714c8, type: 3}
       propertyPath: m_Color.r
-      value: 0.050417088
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 8461782754289748904, guid: 69c48e7fcbd8e844e85828e2458714c8, type: 3}
       propertyPath: m_Name
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5459695721650187868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41259044be2aa2a48aa6114d79e8dd1a, type: 3}
+  m_Script: {fileID: 11500000, guid: 22a6aa8ede8dca348afefaf367750ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   points: 10
