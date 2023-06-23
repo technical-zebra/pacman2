@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Represents a speedy power pellet in the game.
+/// </summary>
 public class SpeedyPowerPellet : PowerPellet
 {
-    // Any additional properties or methods specific to SpeedyPowerPellet can be defined here
-    private void Awake()
+    public SpeedyPowerPellet()
     {
         duration = 8f; // Duration of the power pellet effect
     }
@@ -20,4 +22,3 @@ public class SpeedyPowerPellet : PowerPellet
         FindObjectOfType<GameManager>().SpeedyPowerPelletEaten(this);
     }
 }
-

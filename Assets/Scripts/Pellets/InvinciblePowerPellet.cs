@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Represents an invincible power pellet in the game.
+/// </summary>
 public class InvinciblePowerPellet : PowerPellet
 {
-    private void Awake()
+    public InvinciblePowerPellet()
     {
         duration = 15f; // Duration of the power pellet effect
     }
