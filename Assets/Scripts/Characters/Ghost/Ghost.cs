@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 [DefaultExecutionOrder(-10)]
 [RequireComponent(typeof(Movement))]
-public class Ghost : MonoBehaviour
+public class Ghost : MonoBehaviour, IPowerPelletObserver
 {
     /// <summary>
     /// Reference to the Movement component attached to the ghost.
