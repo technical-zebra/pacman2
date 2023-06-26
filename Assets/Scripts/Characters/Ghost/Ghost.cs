@@ -47,6 +47,16 @@ public class Ghost : MonoBehaviour, IPowerPelletObserver
     /// </summary>
     public int points = 200;
 
+    public Ghost(Game game)
+    {
+        game.PowerPelletEatenEvent += OnPowerPelletEaten;
+    }
+
+    private void PowerPelletEatenEventHandler(object sender, PowerPelletEatenEventArgs e)
+    {
+        self.frightened.Enable(e.pellet.duration);
+    }
+
     private void Awake()
     {
         // Get the required components attached to the object
@@ -61,6 +71,9 @@ public class Ghost : MonoBehaviour, IPowerPelletObserver
     {
         // Reset the state of the ghost
         ResetState();
+
+        // Subscribe to the PowerPelletEatenEvent
+        game.PowerPelletEatenEvent += OnPowerPelletEaten;
     }
 
     /// <summary>

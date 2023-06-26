@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+// Define the event delegate
+public delegate void PowerPelletEatenEventHandler(PowerPellet pellet);
+
 public class GameManager : MonoBehaviour
 {
     private Ghost[] ghosts;  // Array of ghost objects
@@ -25,10 +28,11 @@ public class GameManager : MonoBehaviour
     public AudioSource soundtrack;
     public AudioSource lostlife;
     public AudioSource ghostscream;
+    public event PowerPelletEatenEventHandler PowerPelletEatenEvent;
 
     private void Start()
     {
-        ghosts = FindObjectsOfType<Ghost>();
+        ghosts = FindObjectsOfType<Ghost>(self);
         NewGame();  // Start a new game
     }
 
@@ -141,10 +145,12 @@ public class GameManager : MonoBehaviour
 
     public void PowerPelletEaten(PowerPellet pellet)
     {
-        for (int i = 0; i < ghosts.Length; i++)
-        {
-            ghosts[i].frightened.Enable(pellet.duration);  // Enable the frightened state of each ghost for the specified duration
-        }
+        // for (int i = 0; i < ghosts.Length; i++)
+        // {
+        //     ghosts[i].frightened.Enable(pellet.duration);  // Enable the frightened state of each ghost for the specified duration
+        // }
+
+        PowerPelletEatenEvent?.Invoke(this, new PowerPelletEatenEventArgs(pellet));
 
         eatpowerpellet.Play();
         soundtrack.Play();
@@ -152,6 +158,16 @@ public class GameManager : MonoBehaviour
         PelletEaten(pellet);  // Process the power pellet as a regular pellet
         CancelInvoke(nameof(ResetGhostMultiplier));  // Cancel any previous invocation of ResetGhostMultiplier
         Invoke(nameof(ResetGhostMultiplier), pellet.duration);  // Reset the ghost point multiplier after the specified duration
+    }
+
+    public class PowerPelletEventArgs : EventArgs
+    {
+        public PowerPellet PowerPellet { get; }
+
+        public PowerPelletEventArgs(PowerPellet powerPellet)
+        {
+            PowerPellet = powerPellet;
+        }
     }
 
     public void SpeedyPowerPelletEaten(SpeedyPowerPellet pellet)
