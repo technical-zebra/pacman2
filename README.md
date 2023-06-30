@@ -1,6 +1,6 @@
 # pacman2
 
-All Documentation: https://drive.google.com/drive/folders/1Zj5EUIQo2ihr41GHv_0HIZzzK_a2FYb7?usp=sharing[https://drive.google.com/drive/folders/1Zj5EUIQo2ihr41GHv_0HIZzzK_a2FYb7?usp=sharing]
+All Documentation: https://drive.google.com/drive/folders/1Zj5EUIQo2ihr41GHv_0HIZzzK_a2FYb7?usp=sharing(https://drive.google.com/drive/folders/1Zj5EUIQo2ihr41GHv_0HIZzzK_a2FYb7?usp=sharing)
 
 ## **Game Title:** CP5609 Game - Expanded Pacman Game
 
